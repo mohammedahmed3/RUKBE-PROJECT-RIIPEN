@@ -1,4 +1,4 @@
-name: Deploy Backend to Heroku
+name: Deploy Backend to Render
 
 on:
   push:
@@ -21,9 +21,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Deploy to Heroku
+    - name: Deploy to Render
       run: |
-        echo "machine api.heroku.com login ${{ secrets.HEROKU_EMAIL }} password ${{ secrets.HEROKU_API_KEY }}" > ~/.netrc
-        echo "machine git.heroku.com login ${{ secrets.HEROKU_EMAIL }} password ${{ secrets.HEROKU_API_KEY }}" >> ~/.netrc
-        git remote add heroku https://git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
-        git push heroku main
+        curl -sSL https://cli.render.com/install.sh | sudo bash
+        render login --api-key ${{ secrets.RENDER_API_KEY }}
+        render deploy --service construction-supply-backend --branch main
